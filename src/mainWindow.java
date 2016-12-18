@@ -16,8 +16,8 @@ public class mainWindow {
                 frame.setResizable(false);
                 frame.setBackground(Color.WHITE);
                 frame.pack();
-                frame.setSize(1000, 710);//setSize要在pack之后
-                frame.setLocation(100, 0);
+                frame.setSize(1502, 863);//setSize要在pack之后
+                frame.setLocation(0, 0);
                 frame.setVisible(true);
             }
         });
