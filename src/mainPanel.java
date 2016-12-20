@@ -113,6 +113,7 @@ public class mainPanel extends JPanel implements MouseMotionListener {
                 m_panel.repaint(531, 46, 30, 35);
                 m_panel.repaint( 840, 52, 30, 35);
 
+                m_panel.repaint( 1205, 371, 30, 35);
             }
         });
         m_backLabel.add(btn);
@@ -187,6 +188,7 @@ public class mainPanel extends JPanel implements MouseMotionListener {
         g2.drawImage(img2, 402, 493, 30, 35, imgObs2);
         g2.drawImage(img2, 711, 490, 30, 35, imgObs2);
         g2.drawImage(img2, 284, 174, 30, 35, imgObs2);
+        g2.drawImage(img2, 1205, 371, 30, 35, imgObs2);
 
 
         Image img3 = m_bRunning == true ? m_imgIconZuoFamen1.getImage() : m_imgIconZuoFamen2.getImage();
