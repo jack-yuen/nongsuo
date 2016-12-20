@@ -1,9 +1,12 @@
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.GeneralPath;
 import java.awt.image.ImageObserver;
 
 /**
@@ -27,6 +30,12 @@ public class mainPanel extends JPanel implements MouseMotionListener {
     ImageIcon m_imgIconYouFamen2 = new ImageIcon(getClass().getResource("/img/youfamen2.png"));
     ImageIcon m_imgIconZuoFamen1 = new ImageIcon(getClass().getResource("/img/zuofamen.png"));
     ImageIcon m_imgIconZuoFamen2 = new ImageIcon(getClass().getResource("/img/zuofamen2.png"));
+    JLabel m_tempLabel1;
+    JLabel m_tempLabel2;
+    double m_temp1;
+    double m_temp2;
+    double m_yewei1;
+    double m_yewei2;
 
     public mainPanel() {
         this.setLayout(null);
@@ -38,6 +47,15 @@ public class mainPanel extends JPanel implements MouseMotionListener {
         this.addMouseMotionListener(this);
         AddBackgroundLabelAndBtn();
 
+        m_tempLabel1 = new JLabel("SB个号");
+        m_tempLabel1.setFont(new Font("宋体", Font.PLAIN, 18));
+        m_tempLabel1.setBounds(1427, 133, 100, 20);
+        m_backLabel.add(m_tempLabel1);
+        m_tempLabel2 = new JLabel("SB个号");
+        m_tempLabel2.setFont(new Font("宋体", Font.PLAIN, 18));
+        m_tempLabel2.setBounds(1427, 166, 100, 20);
+        m_backLabel.add(m_tempLabel2);
+        AddSliders();
     }
 
     public void paint(Graphics g) {
@@ -48,6 +66,8 @@ public class mainPanel extends JPanel implements MouseMotionListener {
         DrawDashedLind(g);
         DrawZhuanlunImg(g);
         DrawFamenImg(g);
+        DrawTempStaticLabel();
+        DrawWaters(g);
     }
 
     private void DrawBackground(Graphics g) {
@@ -198,5 +218,175 @@ public class mainPanel extends JPanel implements MouseMotionListener {
 
 
         g2.dispose();
+    }
+
+    private void DrawTempStaticLabel(){
+        JLabel label1 = new JLabel();
+        label1.setText("温度1");
+        label1.setBounds(1277, 338, 100, 20);
+        m_backLabel.add(label1);
+        JLabel label2 = new JLabel();
+        label2.setText("液位1");
+        label2.setBounds(1277, 388, 100, 20);
+        m_backLabel.add(label2);
+        JLabel label3 = new JLabel();
+        label3.setText("温度2");
+        label3.setBounds(1277, 438, 100, 20);
+        m_backLabel.add(label3);
+        JLabel label4 = new JLabel();
+        label4.setText("液位2");
+        label4.setBounds(1277, 488, 100, 20);
+        m_backLabel.add(label4);
+    }
+
+    private void AddSliders(){
+        JSlider slider = new JSlider(0, 100);
+        slider.setMajorTickSpacing(2);
+        slider.setMinorTickSpacing(1);
+        slider.setPaintTicks(true);
+        slider.setPaintLabels(false);
+        slider.setBackground(Color.WHITE);
+        slider.setBounds(1328, 333, 150, 40);
+        slider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                JSlider j = (JSlider) (e.getSource());
+                m_temp1 = j.getValue();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        m_tempLabel1.setText(m_temp1 + "℃");
+                        if (m_panel != null) {
+                            m_backLabel.repaint(519, 126, 90, 245);
+                            //m_backLabel.repaint(VelocimeterUtil.GetUpdateArea());
+                        }
+                    }
+                }).run();
+            }
+        });
+        slider.setValue(40);
+        m_backLabel.add(slider);
+
+
+        JSlider sliderYewei1 = new JSlider(0, 187);
+        sliderYewei1.setMajorTickSpacing(2);
+        sliderYewei1.setMinorTickSpacing(1);
+        sliderYewei1.setPaintTicks(true);
+        sliderYewei1.setPaintLabels(false);
+        sliderYewei1.setBackground(Color.WHITE);
+        sliderYewei1.setBounds(1328, 383, 150, 40);
+        sliderYewei1.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                JSlider j = (JSlider) (e.getSource());
+                m_yewei1 = j.getValue();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (m_panel != null) {
+                            m_backLabel.repaint(519, 126, 90, 245);
+                            //m_backLabel.repaint(VelocimeterUtil.GetUpdateArea());
+                        }
+                    }
+                }).run();
+            }
+        });
+        sliderYewei1.setValue(2);
+        m_backLabel.add(sliderYewei1);
+
+        JSlider slider2 = new JSlider(0, 100);
+        slider2.setMajorTickSpacing(2);
+        slider2.setMinorTickSpacing(1);
+        slider2.setPaintTicks(true);
+        slider2.setPaintLabels(false);
+        slider2.setBackground(Color.WHITE);
+        slider2.setBounds(1328, 433, 150, 40);
+        slider2.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                JSlider j = (JSlider) (e.getSource());
+                m_temp2 = j.getValue();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        m_tempLabel2.setText(m_temp2 + "℃");
+                        if (m_panel != null) {
+                            m_backLabel.repaint(829, 126, 90, 245);
+                            //m_backLabel.repaint(VelocimeterUtil.GetUpdateArea());
+                        }
+                    }
+                }).run();
+            }
+        });
+        slider2.setValue(70);
+        m_backLabel.add(slider2);
+
+        JSlider sliderYewei2 = new JSlider(0, 187);
+        sliderYewei2.setMajorTickSpacing(2);
+        sliderYewei2.setMinorTickSpacing(2);
+        sliderYewei2.setPaintTicks(true);
+        sliderYewei2.setPaintLabels(false);
+        sliderYewei2.setBackground(Color.WHITE);
+        sliderYewei2.setBounds(1328, 483, 150, 40);
+        sliderYewei2.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                JSlider j = (JSlider) (e.getSource());
+                m_yewei2 = j.getValue();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (m_panel != null) {
+                            m_backLabel.repaint(829, 126, 90, 245);
+                            //m_backLabel.repaint(VelocimeterUtil.GetUpdateArea());
+                        }
+                    }
+                }).run();
+            }
+        });
+        sliderYewei2.setValue(2);
+        m_backLabel.add(sliderYewei2);
+    }
+
+    private void DrawTempValueLabel(){
+        JLabel label1 = new JLabel();
+        label1.setText("温度1");
+        label1.setBounds(1277, 338, 100, 20);
+        m_backLabel.add(label1);
+        JLabel label2 = new JLabel();
+        label2.setText("液位1");
+        label2.setBounds(1277, 388, 100, 20);
+        m_backLabel.add(label2);
+    }
+
+    private void DrawWaters(Graphics g){
+        double x = m_yewei1;
+        Graphics2D g2 = (Graphics2D) g.create();
+        Color color1 = ColorUtil.GetColor(m_temp1);
+        g2.setColor(color1);
+        GeneralPath path1 = new GeneralPath();
+        path1.moveTo(608,332);
+        path1.lineTo(564, 373);
+        path1.lineTo(522, 331);
+        path1.lineTo(522, 331 - m_yewei1);
+        path1.curveTo(533, 331 - m_yewei1 - 10, 553, 331 - m_yewei1 + 10, 565, 331 - m_yewei1);
+        path1.curveTo(576, 331 - m_yewei1 - 10, 587, 331 - m_yewei1 + 10, 608, 331 - m_yewei1);
+        path1.closePath();
+        g2.fill(path1);
+        g2.dispose();
+        
+        Graphics2D g22 = (Graphics2D) g.create();
+        Color color2 = ColorUtil.GetColor(m_temp2);
+        g22.setColor(color2);
+        GeneralPath path2 = new GeneralPath();
+        path2.moveTo(916,332);
+        path2.lineTo(873, 374);
+        path2.lineTo(828, 331);
+        path2.lineTo(828, 331 - m_yewei2);
+        path2.curveTo(837, 331 - m_yewei2 - 10, 852, 331 - m_yewei2 + 10, 868, 331 - m_yewei2);
+        path2.curveTo(878, 331 - m_yewei2 - 10, 894, 331 - m_yewei2 + 10, 916, 331 - m_yewei2);
+        path2.closePath();
+        g22.fill(path2);
+        g22.dispose();
     }
 }
