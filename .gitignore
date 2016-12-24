@@ -1,7 +1,6 @@
 out/*
 .DS_Store
 /src/.DS_Store
-.idea/workspace.xml
 out/*
 out/*/*
 out/*/*/*
