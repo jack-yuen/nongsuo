@@ -36,6 +36,9 @@ public class mainPanel extends JPanel implements MouseMotionListener {
     double m_temp2;
     double m_yewei1;
     double m_yewei2;
+    double m_tempZheng1;
+    double m_tempZheng2;
+    double m_tempWater1Top;
 
     public mainPanel() {
         this.setLayout(null);
@@ -65,9 +68,11 @@ public class mainPanel extends JPanel implements MouseMotionListener {
         DrawIndicator(g);
         DrawDashedLind(g);
         DrawZhuanlunImg(g);
+        DrawZhenqi1(g);
+        DrawZhenqi2(g);
         DrawFamenImg(g);
         DrawTempStaticLabel();
-        DrawWaters(g);
+        DrawWaters(g);DrawWater1Top(g);
     }
 
     private void DrawBackground(Graphics g) {
@@ -172,8 +177,10 @@ public class mainPanel extends JPanel implements MouseMotionListener {
                 new Point(978, 78), new Point(978, 322),
                 new Point(1167, 67), new Point(1270, 67),
                 new Point(1176, 452), new Point(1176, 536), new Point(1255, 536),
-                new Point(1220, 402), new Point(1220, 345), new Point(1152, 345)};
-        int[] arr = new int[]{7,2, 2, 3, 2, 3, 3, 2, 3, 2, 3, 2, 2, 2, 3, 3};
+                new Point(1220, 402), new Point(1220, 345), new Point(1152, 345),
+                new Point(339,400), new Point(258, 400)
+        };
+        int[] arr = new int[]{7,2, 2, 3, 2, 3, 3, 2, 3, 2, 3, 2, 2, 2, 3, 3, 2};
         DashAniUtil.DrawDashLineWithPoints(g, m_curStrokeIndex, points, arr);
     }
 
@@ -202,6 +209,7 @@ public class mainPanel extends JPanel implements MouseMotionListener {
         g2.drawImage(img1, 480, 211, 35, 30, imgObs1);
         g2.drawImage(img1, 480, 163, 35, 30, imgObs1);
         g2.drawImage(img1, 1201, 71, 35, 30, imgObs1);
+
 
         Image img2 = m_bRunning == true ? m_imgIconYouFamen1.getImage() : m_imgIconYouFamen2.getImage();
         ImageObserver imgObs2 = m_bRunning == true ? m_imgIconYouFamen1.getImageObserver() : m_imgIconYouFamen2.getImageObserver();
@@ -237,6 +245,18 @@ public class mainPanel extends JPanel implements MouseMotionListener {
         label4.setText("液位2");
         label4.setBounds(1277, 488, 100, 20);
         m_backLabel.add(label4);
+        JLabel label5 = new JLabel();
+        label5.setText("蒸1温度");
+        label5.setBounds(1277, 438, 100, 20);
+        m_backLabel.add(label3);
+        JLabel label6 = new JLabel();
+        label6.setText("蒸2温度");
+        label6.setBounds(1277, 488, 100, 20);
+        m_backLabel.add(label6);
+        JLabel label7 = new JLabel();
+        label7.setText("水1上温度");
+        label7.setBounds(1277, 438, 100, 20);
+        m_backLabel.add(label7);
     }
 
     private void AddSliders(){
@@ -258,6 +278,8 @@ public class mainPanel extends JPanel implements MouseMotionListener {
                         m_tempLabel1.setText(m_temp1 + "℃");
                         if (m_panel != null) {
                             m_backLabel.repaint(519, 126, 90, 245);
+                            m_backLabel.repaint(556,375, 7, 72);
+                            m_backLabel.repaint(424,440, 132, 7);
                             //m_backLabel.repaint(VelocimeterUtil.GetUpdateArea());
                         }
                     }
@@ -312,6 +334,8 @@ public class mainPanel extends JPanel implements MouseMotionListener {
                         m_tempLabel2.setText(m_temp2 + "℃");
                         if (m_panel != null) {
                             m_backLabel.repaint(829, 126, 90, 245);
+                            m_backLabel.repaint(873,375, 7, 72);
+                            m_backLabel.repaint(734, 440, 61, 7);
                             //m_backLabel.repaint(VelocimeterUtil.GetUpdateArea());
                         }
                     }
@@ -374,6 +398,16 @@ public class mainPanel extends JPanel implements MouseMotionListener {
         path1.closePath();
         g2.fill(path1);
         g2.dispose();
+        Graphics2D g21=(Graphics2D)g.create();
+        GeneralPath path=new GeneralPath();
+        path.moveTo(565,375);
+        path.lineTo(565,440);
+        path.lineTo(424,440);
+        BasicStroke bs=new BasicStroke(7);
+        g21.setStroke(bs);
+        g21.setColor(color1);
+        g21.draw(path);
+        g21.dispose();
         
         Graphics2D g22 = (Graphics2D) g.create();
         Color color2 = ColorUtil.GetColor(m_temp2);
@@ -388,5 +422,55 @@ public class mainPanel extends JPanel implements MouseMotionListener {
         path2.closePath();
         g22.fill(path2);
         g22.dispose();
+        Graphics2D g23=(Graphics2D)g.create();
+        GeneralPath path3=new GeneralPath();
+        path3.moveTo(873,375);
+        path3.lineTo(873, 440);
+        path3.lineTo(734, 440);
+        BasicStroke bs3=new BasicStroke(7);
+        g23.setStroke(bs3);
+        g23.setColor(color2);
+        g23.draw(path3);
+        g23.dispose();
     }
+
+    private void DrawZhenqi1(Graphics g){
+        Graphics2D g23=(Graphics2D)g.create();
+        GeneralPath path3=new GeneralPath();
+        path3.moveTo(291, 159);
+        path3.lineTo(291, 295);
+        path3.lineTo(336, 295);
+        BasicStroke bs3=new BasicStroke(6);
+        g23.setStroke(bs3);
+        g23.setColor(ColorUtil.GetColor(55));
+        g23.draw(path3);
+        g23.dispose();
+    }
+
+    private void DrawWater1Top(Graphics g){
+        Graphics2D g23=(Graphics2D)g.create();
+        GeneralPath path3=new GeneralPath();
+        path3.moveTo(566, 95);
+        path3.lineTo(566, 71);
+        path3.lineTo(717, 71);
+        path3.lineTo(717, 225);
+        BasicStroke bs3=new BasicStroke(6);
+        g23.setStroke(bs3);
+        g23.setColor(ColorUtil.GetColor(55));
+        g23.draw(path3);
+        g23.dispose();
+    }
+
+    private void DrawZhenqi2(Graphics g){
+        Graphics2D g23=(Graphics2D)g.create();
+        GeneralPath path3=new GeneralPath();
+        path3.moveTo(339,392);
+        path3.lineTo(258, 392);
+        BasicStroke bs3=new BasicStroke(6);
+        g23.setStroke(bs3);
+        g23.setColor(ColorUtil.GetColor(55));
+        g23.draw(path3);
+        g23.dispose();
+    }
+
 }
