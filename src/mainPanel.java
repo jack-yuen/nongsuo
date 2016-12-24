@@ -247,15 +247,15 @@ public class mainPanel extends JPanel implements MouseMotionListener {
         m_backLabel.add(label4);
         JLabel label5 = new JLabel();
         label5.setText("蒸1温度");
-        label5.setBounds(1277, 438, 100, 20);
+        label5.setBounds(1277, 538, 100, 20);
         m_backLabel.add(label3);
         JLabel label6 = new JLabel();
         label6.setText("蒸2温度");
-        label6.setBounds(1277, 488, 100, 20);
+        label6.setBounds(1277, 588, 100, 20);
         m_backLabel.add(label6);
         JLabel label7 = new JLabel();
         label7.setText("水1上温度");
-        label7.setBounds(1277, 438, 100, 20);
+        label7.setBounds(1277, 638, 100, 20);
         m_backLabel.add(label7);
     }
 
