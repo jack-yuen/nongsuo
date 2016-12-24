@@ -9,14 +9,14 @@ public class mainWindow {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JFrame frame = new JFrame("层析演示");
+                JFrame frame = new JFrame("浓缩演示");
                 mainPanel mp = new mainPanel();
                 frame.setContentPane(mp);
                 frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
                 frame.setResizable(false);
                 frame.setBackground(Color.WHITE);
                 frame.pack();
-                frame.setSize(1502, 863);//setSize要在pack之后
+                frame.setSize(1502, 685);//setSize要在pack之后
                 frame.setLocation(0, 0);
                 frame.setVisible(true);
             }

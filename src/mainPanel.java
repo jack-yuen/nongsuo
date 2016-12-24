@@ -8,6 +8,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.GeneralPath;
 import java.awt.image.ImageObserver;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by jack on 2016/12/18.
@@ -39,8 +41,10 @@ public class mainPanel extends JPanel implements MouseMotionListener {
     double m_tempZheng1;
     double m_tempZheng2;
     double m_tempWater1Top;
+    ExecutorService m_cachedThreadPool;
 
     public mainPanel() {
+        m_cachedThreadPool = Executors.newCachedThreadPool();
         this.setLayout(null);
         this.setBackground(Color.WHITE);
         label1 = new JLabel();
@@ -235,27 +239,27 @@ public class mainPanel extends JPanel implements MouseMotionListener {
         m_backLabel.add(label1);
         JLabel label2 = new JLabel();
         label2.setText("液位1");
-        label2.setBounds(1277, 388, 100, 20);
+        label2.setBounds(1277, 383, 100, 20);
         m_backLabel.add(label2);
         JLabel label3 = new JLabel();
         label3.setText("温度2");
-        label3.setBounds(1277, 438, 100, 20);
+        label3.setBounds(1277, 428, 100, 20);
         m_backLabel.add(label3);
         JLabel label4 = new JLabel();
         label4.setText("液位2");
-        label4.setBounds(1277, 488, 100, 20);
+        label4.setBounds(1277, 473, 100, 20);
         m_backLabel.add(label4);
         JLabel label5 = new JLabel();
         label5.setText("蒸1温度");
-        label5.setBounds(1277, 538, 100, 20);
-        m_backLabel.add(label3);
+        label5.setBounds(1277, 518, 100, 20);
+        m_backLabel.add(label5);
         JLabel label6 = new JLabel();
         label6.setText("蒸2温度");
-        label6.setBounds(1277, 588, 100, 20);
+        label6.setBounds(1277, 563, 100, 20);
         m_backLabel.add(label6);
         JLabel label7 = new JLabel();
         label7.setText("水1上温度");
-        label7.setBounds(1277, 638, 100, 20);
+        label7.setBounds(1277, 608, 100, 20);
         m_backLabel.add(label7);
     }
 
@@ -272,7 +276,7 @@ public class mainPanel extends JPanel implements MouseMotionListener {
             public void stateChanged(ChangeEvent e) {
                 JSlider j = (JSlider) (e.getSource());
                 m_temp1 = j.getValue();
-                new Thread(new Runnable() {
+                m_cachedThreadPool.execute(new Runnable() {
                     @Override
                     public void run() {
                         m_tempLabel1.setText(m_temp1 + "℃");
@@ -283,7 +287,7 @@ public class mainPanel extends JPanel implements MouseMotionListener {
                             //m_backLabel.repaint(VelocimeterUtil.GetUpdateArea());
                         }
                     }
-                }).run();
+                });
             }
         });
         slider.setValue(40);
@@ -296,13 +300,13 @@ public class mainPanel extends JPanel implements MouseMotionListener {
         sliderYewei1.setPaintTicks(true);
         sliderYewei1.setPaintLabels(false);
         sliderYewei1.setBackground(Color.WHITE);
-        sliderYewei1.setBounds(1328, 383, 150, 40);
+        sliderYewei1.setBounds(1328, 378, 150, 40);
         sliderYewei1.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
                 JSlider j = (JSlider) (e.getSource());
                 m_yewei1 = j.getValue();
-                new Thread(new Runnable() {
+                m_cachedThreadPool.execute(new Runnable() {
                     @Override
                     public void run() {
                         if (m_panel != null) {
@@ -310,7 +314,7 @@ public class mainPanel extends JPanel implements MouseMotionListener {
                             //m_backLabel.repaint(VelocimeterUtil.GetUpdateArea());
                         }
                     }
-                }).run();
+                });
             }
         });
         sliderYewei1.setValue(2);
@@ -322,13 +326,13 @@ public class mainPanel extends JPanel implements MouseMotionListener {
         slider2.setPaintTicks(true);
         slider2.setPaintLabels(false);
         slider2.setBackground(Color.WHITE);
-        slider2.setBounds(1328, 433, 150, 40);
+        slider2.setBounds(1328, 423, 150, 40);
         slider2.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
                 JSlider j = (JSlider) (e.getSource());
                 m_temp2 = j.getValue();
-                new Thread(new Runnable() {
+                m_cachedThreadPool.execute(new Runnable() {
                     @Override
                     public void run() {
                         m_tempLabel2.setText(m_temp2 + "℃");
@@ -339,7 +343,7 @@ public class mainPanel extends JPanel implements MouseMotionListener {
                             //m_backLabel.repaint(VelocimeterUtil.GetUpdateArea());
                         }
                     }
-                }).run();
+                });
             }
         });
         slider2.setValue(70);
@@ -351,13 +355,13 @@ public class mainPanel extends JPanel implements MouseMotionListener {
         sliderYewei2.setPaintTicks(true);
         sliderYewei2.setPaintLabels(false);
         sliderYewei2.setBackground(Color.WHITE);
-        sliderYewei2.setBounds(1328, 483, 150, 40);
+        sliderYewei2.setBounds(1328, 468, 150, 40);
         sliderYewei2.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
                 JSlider j = (JSlider) (e.getSource());
                 m_yewei2 = j.getValue();
-                new Thread(new Runnable() {
+                m_cachedThreadPool.execute(new Runnable() {
                     @Override
                     public void run() {
                         if (m_panel != null) {
@@ -365,11 +369,97 @@ public class mainPanel extends JPanel implements MouseMotionListener {
                             //m_backLabel.repaint(VelocimeterUtil.GetUpdateArea());
                         }
                     }
-                }).run();
+                });
             }
         });
         sliderYewei2.setValue(2);
         m_backLabel.add(sliderYewei2);
+
+        JSlider sliderZhengqi1 = new JSlider(0, 100);
+        sliderZhengqi1.setMajorTickSpacing(2);
+        sliderZhengqi1.setMinorTickSpacing(1);
+        sliderZhengqi1.setPaintTicks(true);
+        sliderZhengqi1.setPaintLabels(false);
+        sliderZhengqi1.setBackground(Color.WHITE);
+        sliderZhengqi1.setBounds(1328, 513, 150, 40);
+        sliderZhengqi1.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                JSlider j = (JSlider) (e.getSource());
+                m_tempZheng1 = j.getValue();
+                m_cachedThreadPool.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        //m_tempLabel1.setText(m_temp1 + "℃");
+                        if (m_panel != null) {
+                            m_backLabel.repaint(287, 159, 20, 150);
+                            m_backLabel.repaint(288,292, 45, 10);
+                            //m_backLabel.repaint(424,440, 132, 7);
+                            //m_backLabel.repaint(VelocimeterUtil.GetUpdateArea());
+                        }
+                    }
+                });
+            }
+        });
+        sliderZhengqi1.setValue(40);
+        m_backLabel.add(sliderZhengqi1);
+
+        JSlider sliderZhengqi2 = new JSlider(0, 100);
+        sliderZhengqi2.setMajorTickSpacing(2);
+        sliderZhengqi2.setMinorTickSpacing(1);
+        sliderZhengqi2.setPaintTicks(true);
+        sliderZhengqi2.setPaintLabels(false);
+        sliderZhengqi2.setBackground(Color.WHITE);
+        sliderZhengqi2.setBounds(1328, 558, 150, 40);
+        sliderZhengqi2.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                JSlider j = (JSlider) (e.getSource());
+                m_tempZheng2 = j.getValue();
+                m_cachedThreadPool.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        //m_tempLabel1.setText(m_tempZheng2 + "℃");
+                        if (m_panel != null) {
+                            m_backLabel.repaint(258, 388, 81, 10);
+                            //m_backLabel.repaint(424,440, 132, 7);
+                            //m_backLabel.repaint(VelocimeterUtil.GetUpdateArea());
+                        }
+                    }
+                });
+            }
+        });
+        sliderZhengqi2.setValue(40);
+        m_backLabel.add(sliderZhengqi2);
+
+        JSlider sliderWater1Top = new JSlider(0, 100);
+        sliderWater1Top.setMajorTickSpacing(2);
+        sliderWater1Top.setMinorTickSpacing(1);
+        sliderWater1Top.setPaintTicks(true);
+        sliderWater1Top.setPaintLabels(false);
+        sliderWater1Top.setBackground(Color.WHITE);
+        sliderWater1Top.setBounds(1328, 603, 150, 40);
+        sliderWater1Top.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                JSlider j = (JSlider) (e.getSource());
+                m_tempWater1Top = j.getValue();
+                m_cachedThreadPool.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        //m_tempLabel1.setText(m_tempWater1Top + "℃");
+                        if (m_panel != null) {
+                            m_backLabel.repaint(562, 71, 10, 24);
+                            m_backLabel.repaint(566,67, 51, 41);
+                            m_backLabel.repaint(713,71, 10, 154);
+                            //m_backLabel.repaint(VelocimeterUtil.GetUpdateArea());
+                        }
+                    }
+                });
+            }
+        });
+        sliderWater1Top.setValue(40);
+        m_backLabel.add(sliderWater1Top);
     }
 
     private void DrawTempValueLabel(){
@@ -442,7 +532,7 @@ public class mainPanel extends JPanel implements MouseMotionListener {
         path3.lineTo(336, 295);
         BasicStroke bs3=new BasicStroke(6);
         g23.setStroke(bs3);
-        g23.setColor(ColorUtil.GetColor(55));
+        g23.setColor(ColorUtil.GetColor(m_tempZheng1));
         g23.draw(path3);
         g23.dispose();
     }
@@ -456,7 +546,7 @@ public class mainPanel extends JPanel implements MouseMotionListener {
         path3.lineTo(717, 225);
         BasicStroke bs3=new BasicStroke(6);
         g23.setStroke(bs3);
-        g23.setColor(ColorUtil.GetColor(55));
+        g23.setColor(ColorUtil.GetColor(m_tempWater1Top));
         g23.draw(path3);
         g23.dispose();
     }
@@ -468,7 +558,7 @@ public class mainPanel extends JPanel implements MouseMotionListener {
         path3.lineTo(258, 392);
         BasicStroke bs3=new BasicStroke(6);
         g23.setStroke(bs3);
-        g23.setColor(ColorUtil.GetColor(55));
+        g23.setColor(ColorUtil.GetColor(m_tempZheng2));
         g23.draw(path3);
         g23.dispose();
     }
